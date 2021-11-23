@@ -1,0 +1,52 @@
+if not isfolder("Vids") then
+	makefolder("Vids")
+end
+
+local function Request(videoId)
+    	if not isfile("Vids/" .. videoId ..".webm") then
+	local responce = syn.request({
+		Url = "https://alexserver.herokuapp.com/youtube",
+		Method = "POST",
+		Headers = {
+			["Content-Type"] = "application/json"
+		},
+		Body = game:GetService("HttpService"):JSONEncode({
+			["videoId"] = videoId,
+		})
+	})
+	if responce.StatusCode == 404 then return false end
+	    writefile("Vids/" .. videoId ..".webm", responce.Body)
+	end
+	return getsynasset("Vids/" .. videoId ..".webm")
+end
+
+local function ToRun(ID)
+	local VideoID = Request(ID)
+	
+	local ScreenGui = Instance.new("ScreenGui")
+	local Frame = Instance.new("VideoFrame")
+	 
+	ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	wait(0.5)
+	local Cam = game:GetService("Workspace").CurrentCamera
+	
+	Cam:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+	    Frame.Size = UDim2.new(0, Cam.ViewportSize.X, 0, Cam.ViewportSize.Y + 30)
+	end)
+
+	Frame.Parent = ScreenGui
+	Frame.BackgroundColor3 = Color3.new(1, 1, 1)
+	Frame.Position = UDim2.new(0, 0, -0.08, 0)
+	Frame.Video = tostring(VideoID)
+	Frame.Size = UDim2.new(0, Cam.ViewportSize.X, 0, Cam.ViewportSize.Y + 30)
+	Frame.Visible = false
+	repeat
+  	  wait()
+	until Frame.IsLoaded
+	Frame.Visible = true 
+	Frame:Play()
+	repeat wait() until not Frame.Playing
+	Frame:Destroy()
+end
+
+return ToRun
