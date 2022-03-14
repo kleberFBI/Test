@@ -1,0 +1,595 @@
+_G.GuiToLua = nil -- Change "nil" To The Path Of The Gui To Use It, Or Select In Roblox Studio Then Run This.
+
+local function GetUIColor(UI)
+	local Str = {}
+	for i = 5, 1000, 5 do 
+		Str[i] = true
+	end
+
+	local Val = tostring(UI.Color)
+
+	local CI = ""
+	local CT = ""
+	local TS = {}
+	for i = 1, #Val do
+		CI = string.sub(Val, i, i)
+
+		if CI ~= " " then
+			CT = CT .. CI
+		else
+			TS[#TS+1] = tonumber(CT)
+			CT = ""
+		end
+	end
+
+	local FT = {}
+	for i, v in pairs(TS) do
+		if not Str[i] then
+			FT[#FT+1] = v
+		end
+	end
+	local FS = ""
+	for i = 1, #FT, 4 do
+		FS = FS .. "ColorSequenceKeypoint.new(" .. FT[i] .. ", Color3.new(" .. FT[i+1] .. ", " .. FT[i+2] .. ", " .. FT[i+3] .. ")),\n    "
+	end
+
+	FS = string.sub(FS, 1, #FS - 3)
+	return "ColorSequence.new({" .. "\n    " .. string.sub(FS, 1, #FS-3) .. "\n" .. " })\n"
+end
+
+local ScreenGuiP = {
+	["DisplayOrder"] = 0,
+	["Enabled"] = true,
+	["IgnoreGuiInset"] = false,
+	["Name"] = "ScreenGui",
+	["ResetOnSpawn"] = true,
+	["ZIndexBehavior"] = Enum.ZIndexBehavior.Global,
+	["Archivable"] = true,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil,
+}
+
+local FrameP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = false,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Name"] = "Frame",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = false,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Style"] = Enum.FrameStyle.Custom,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local ScrollingFrameP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = false,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Name"] = "ScrollingFrame",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = true,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = true,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["AutomaticCanvasSize"] = Enum.AutomaticSize.None,
+	["BottomImage"] = "rbxasset://textures/ui/Scroll/scroll-bottom.png",
+	["CanvasPosition"] = Vector2.new(0, 0),
+	["CanvasSize"] = UDim2.new(0, 0, 2, 0),
+	["ElasticBehavior"] = Enum.ElasticBehavior.WhenScrollable,
+	["HorizontalScrollBarInset"] = Enum.ScrollBarInset.None,
+	["MidImage"] = "rbxasset://textures/ui/Scroll/scroll-middle.png",
+	["ScrollBarImageColor3"] = Color3.new(1, 1, 1),
+	["ScrollBarImageTransparency"] = 0,
+	["ScrollBarThickness"] = 12,
+	["ScrollingDirection"] = Enum.ScrollingDirection.XY,
+	["ScrollingEnabled"] = true,
+	["TopImage"] = "rbxasset://textures/ui/Scroll/scroll-top.png",
+	["VerticalScrollBarInset"] = Enum.ScrollBarInset.None,
+	["VerticalScrollBarPosition"] = Enum.VerticalScrollBarPosition.Right,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local TextLabelP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = false,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Name"] = "TextLabel",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = false,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["Font"] = Enum.Font.Legacy,
+	["LineHeight"] = 1,
+	["MaxVisibleGraphemes"] = -1,
+	["RichText"] = false,
+	["Text"] = "Label",
+	["TextColor3"] = Color3.new(.105882, .164706, .207843),
+	["TextScaled"] = false,
+	["TextSize"] = 8,
+	["TextStrokeColor3"] = Color3.new(0, 0, 0),
+	["TextStrokeTransparency"] = 1,
+	["TextTransparency"] = 0,
+	["TextTruncate"] = Enum.TextTruncate.None,
+	["TextWrapped"] = false,
+	["TextXAlignment"] = Enum.TextXAlignment.Center,
+	["TextYAlignment"] = Enum.TextYAlignment.Center,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local TextButtonP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = true,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutoButtonColor"] = true,
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Modal"] = false,
+	["Name"] = "TextButton",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = true,
+	["Selected"] = false,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Style"] = Enum.ButtonStyle.Custom,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["Font"] = Enum.Font.Legacy,
+	["LineHeight"] = 1,
+	["MaxVisibleGraphemes"] = -1,
+	["RichText"] = false,
+	["Text"] = "Button",
+	["TextColor3"] = Color3.new(.105882, .164706, .207843),
+	["TextScaled"] = false,
+	["TextSize"] = 8,
+	["TextStrokeColor3"] = Color3.new(0, 0, 0),
+	["TextStrokeTransparency"] = 1,
+	["TextTransparency"] = 0,
+	["TextTruncate"] = Enum.TextTruncate.None,
+	["TextWrapped"] = false,
+	["TextXAlignment"] = Enum.TextXAlignment.Center,
+	["TextYAlignment"] = Enum.TextYAlignment.Center,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local TextBoxP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = true,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["ClearTextOnFocus"] = true,
+	["LayoutOrder"] = 0,
+	["CursorPosition"] = 1,
+	["Name"] = "TextBox",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = true,
+	["SelectionStart"] = -1,
+	["ShowNativeInput"] = true,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["TextEditable"] = true,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["Font"] = Enum.Font.Legacy,
+	["LineHeight"] = 1,
+	["MaxVisibleGraphemes"] = -1,
+	["PlaceholderColor3"] = Color3.new(.7, .7, .7),
+	["PlaceholderText"] = "",
+	["RichText"] = false,
+	["Text"] = "TextBox",
+	["TextColor3"] = Color3.new(.105882, .164706, .207843),
+	["TextScaled"] = false,
+	["TextSize"] = 8,
+	["TextStrokeColor3"] = Color3.new(0, 0, 0),
+	["TextStrokeTransparency"] = 1,
+	["TextTransparency"] = 0,
+	["TextTruncate"] = Enum.TextTruncate.None,
+	["TextWrapped"] = false,
+	["TextXAlignment"] = Enum.TextXAlignment.Center,
+	["TextYAlignment"] = Enum.TextYAlignment.Center,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local ImageButtonP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = true,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutoButtonColor"] = true,
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Modal"] = false,
+	["Name"] = "ImageButton",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = true,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Style"] =  Enum.ButtonStyle.Custom,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["HoverImage"] = "",
+	["Image"] = "",
+	["ImageColor3"] = Color3.new(1, 1, 1),
+	["ImageRectOffset"] = Vector2.new(0, 0),
+	["ImageRectSize"] = Vector2.new(0, 0),
+	["ImageTransparency"] = 0,
+	["PressedImage"] = "",
+	["ScaleType"] =  Enum.ScaleType.Stretch,
+	["SliceScale"] = 1,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local ImageLabelP = {
+	["Draggable"] = false,
+	["SelectionImageObject"] = nil,
+	["Active"] = false,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, 0.635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, 0.164706, .207843),
+	["BorderMode"] = Enum.BorderMode.Outline,
+	["BorderSizePixel"] = 1,
+	["LayoutOrder"] = 0,
+	["Name"] = "ImageLabel",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = false,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["Archivable"] = true,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["Image"] = "",
+	["ImageColor3"] = Color3.new(1, 1, 1),
+	["ImageRectOffset"] = Vector2.new(0, 0),
+	["ImageRectSize"] = Vector2.new(0, 0),
+	["ImageTransparency"] = 0,
+	["ScaleType"] =  Enum.ScaleType.Stretch,
+	["SliceScale"] = 1,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil
+}
+
+local UICornerP = {
+	["CornerRadius"] = UDim.new(0, 8),
+	["Name"] = "UICorner",
+	["Archivable"] = true
+}
+
+local UIPageLayoutP = {
+	["Animated"] = true,
+	["Circular"] = false,
+	["EasingDirection"] = Enum.EasingDirection.Out,
+	["EasingStyle"] = Enum.EasingStyle.Back,
+	["Padding"] = UDim.new(0, 0),
+	["TweenTime"] = 1,
+	["Name"] = "UIPageLayout",
+	["Archivable"] = true,
+	["FillDirection"] = Enum.FillDirection.Horizontal,
+	["HorizontalAlignment"] = Enum.HorizontalAlignment.Left,
+	["SortOrder"] = Enum.SortOrder.Name,
+	["VerticalAlignment"] = Enum.VerticalAlignment.Top,
+	["GamepadInputEnabled"] = true,
+	["ScrollWheelInputEnabled"] = true,
+	["TouchInputEnabled"] = true
+}
+
+local UIGradientP = {
+	["Color"] = GetUIColor,
+	["Enabled"] = true,
+	["Offset"] = Vector2.new(0, 0)
+}
+
+local UIListLayoutP = {
+	["Padding"] = UDim.new(0, 0),
+	["Name"] = "UIListLayout",
+	["Archivable"] = true,
+	["FillDirection"] = Enum.FillDirection.Vertical,
+	["HorizontalAlignment"] = Enum.HorizontalAlignment.Left,
+	["SortOrder"] = Enum.SortOrder.Name,
+	["VerticalAlignment"] = Enum.VerticalAlignment.Top
+}
+
+local UIAspectRatioConstraintP = {
+	["Name"] = "UIAspectRatioConstraint",
+	["Archivable"] = true,
+	["AspectRatio"] = 1,
+	["AspectType"] = Enum.AspectType.FitWithinMaxSize,
+	["DominantAxis"] = Enum.DominantAxis.Width
+}
+
+local UIPaddingP = {
+	["Name"] = "UIPadding",
+	["Archivable"] = true,
+	["PaddingBottom"] = UDim.new(0, 0),
+	["PaddingLeft"] = UDim.new(0, 0),
+	["PaddingRight"] = UDim.new(0, 0),
+	["PaddingTop"] = UDim.new(0, 0)
+}
+
+local UIScaleP = {
+	["Name"] = "UIScale",
+	["Archivable"] = true,
+	["Scale"] = 1
+}
+
+local UITextSizeConstraintP = {
+	["Name"] = "UITextSizeConstraint",
+	["Archivable"] = true,
+	["MaxTextSize"] = 100,
+	["MinTextSize"] = 1
+}
+
+local UIGridLayoutP = {
+	["CellPadding"] = UDim2.new(0, 5, 0, 5),
+	["CellSize"] = UDim2.new(0, 100, 0, 100),
+	["Name"] = "UIGridLayout",
+	["Archivable"] = true,
+	["FillDirection"] = Enum.FillDirection.Horizontal,
+	["FillDirectionMaxCells"] = 0,
+	["HorizontalAlignment"] = Enum.HorizontalAlignment.Left,
+	["SortOrder"] = Enum.SortOrder.Name,
+	["VerticalAlignment"] = Enum.VerticalAlignment.Top,
+	["UIGridLayout"] = UIGridLayoutP
+}
+
+local UITableLayoutP = {
+	["FillEmptySpaceColumns"] = false,
+	["FillEmptySpaceRows"] = false,
+	["Padding"] = UDim2.new(0, 0, 0, 0),
+	["Name"] = "UITableLayout",
+	["Archivable"] = true,
+	["FillDirection"] = Enum.FillDirection.Vertical,
+	["HorizontalAlignment"] = Enum.HorizontalAlignment.Left,
+	["MajorAxis"] = Enum.TableMajorAxis.RowMajor,
+	["SortOrder"] =  Enum.SortOrder.Name,
+	["VerticalAlignment"] = Enum.VerticalAlignment.Top
+}
+
+local UISizeConstraintP = {
+	["Name"] = "UISizeConstraint",
+	["Archivable"] = true,
+	["MaxSize"] = Vector2.new(math.huge, math.huge),
+	["MinSize"] = Vector2.new(0, 0)
+}
+
+local UIStrokeP = {
+	["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Contextual,
+	["Color"] = Color3.new(0, 0, 0),
+	["LineJoinMode"] = Enum.LineJoinMode.Round,
+	["Thickness"] = 1,
+	["Transparency"] = 0,
+	["Enabled"] = true,
+	["Name"] = "UIStroke",
+	["Archivable"] = true
+}
+
+local GuiProp = { 
+	["ScreenGui"] = ScreenGuiP,
+	["Frame"] = FrameP,
+	["ScrollingFrame"] = ScrollingFrameP,
+	["TextLabel"] = TextLabelP,
+	["TextButton"] = TextButtonP,
+	["TextBox"] = TextBoxP,
+	["ImageButton"] = ImageButtonP,
+	["ImageLabel"] = ImageLabelP,
+	["UICorner"] = UICornerP,
+	["UIGradient"] = UIGradientP,
+	["UIPageLayout"] = UIPageLayoutP,
+	["UIListLayout"] = UIListLayoutP,
+	["UIAspectRatioConstraint"] = UIAspectRatioConstraintP,
+	["UIPadding"] = UIPaddingP,
+	["UIScale"] = UIScaleP,
+	["UITextSizeConstraint"] = UITextSizeConstraintP,
+	["UITableLayout"] = UITableLayoutP,
+	["UISizeConstraint"] = UISizeConstraintP,
+	["UIStroke"] = UIStrokeP
+}
+
+local UsedNames = {}
+
+local Select = game:GetService("Selection"):Get()
+local MainS = ""
+local SD = [[
+
+]]
+
+local function SPar(Source, ChangeTo)
+	local New = Source
+	while string.find(string.upper(New), "SCRIPT.PARENT") do
+		local X, Y = string.find(string.upper(New), "SCRIPT.PARENT")
+		New = string.sub(New, 1, X - 1) .. ChangeTo .. string.sub(New, Y + 1, #New)
+	end
+	return New
+end
+
+local function GetName(Value)
+	for i, v in pairs(UsedNames) do
+		if v == Value then
+			return i
+		end
+	end
+	return false
+end
+
+local GuiObj = _G.GuiToLua or Select[1]
+
+local MainName
+if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("ScrollingFrame") or GuiObj:IsA("TextLabel") or GuiObj:IsA("TextButton") or GuiObj:IsA("TextBox") or GuiObj:IsA("ImageButton") or GuiObj:IsA("ImageLabel")) then
+	local AllDesc
+	MainS = 'local ' .. GuiObj.Name .. ' = Instance.new("' .. GuiObj.ClassName .. '")' .. SD
+	MainName = GuiObj.Name
+	UsedNames[GuiObj.Name] = GuiObj
+	AllDesc = GuiObj:GetDescendants()
+	
+	for i, v in pairs(AllDesc) do
+		if GuiProp[v.ClassName] then
+			if UsedNames[v.Name] == nil then
+				MainS = MainS .. 'local ' .. v.Name .. ' = Instance.new("' .. v.ClassName .. '")' .. SD
+				UsedNames[v.Name] = v
+			else
+				for i = 1, 1000 do
+					if not UsedNames[v.Name .. "_" .. tostring(i)] then
+						MainS = MainS .. 'local ' .. v.Name .. "_" .. tostring(i) .. ' = Instance.new("' .. v.ClassName .. '")' .. SD
+						UsedNames[v.Name .. "_" .. tostring(i)] = v
+						break
+					end
+				end
+			end
+		end
+	end
+
+	if GuiObj.ClassName == "ScreenGui" then
+		MainS = MainS .. SD .. MainName .. '.Parent = game:GetService("CoreGui")' .. SD .. SD
+	else
+		MainS = MainS .. SD
+	end
+	
+	local RunOnce
+	for i, v in pairs(AllDesc) do
+		RunOnce = true
+		if GuiProp[v.ClassName] ~= nil then
+			for c, d in pairs(GuiProp[v.ClassName]) do
+				if RunOnce then MainS = MainS .. GetName(v) .. ".Parent = " .. GetName(v.Parent) .. SD  RunOnce = false end
+					if tostring(v[c]) ~= tostring(d) then
+					if typeof(v[c]) == "Color3" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. "Color3.new(" .. v[c].R .. ", " .. v[c].G  .. ", " .. v[c].B .. ")" .. SD
+					elseif typeof(v[c]) == "Vector2" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = Vector2.new(" .. v[c].X .. ", " .. v[c].Y .. ")" .. SD
+					elseif typeof(v[c]) == "string" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. '"' .. v[c] .. '"' .. SD
+					elseif typeof(v[c]) == "UDim2" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. "UDim2.new(" .. v[c].X.Scale .. ", " .. v[c].X.Offset .. ", " .. v[c].Y.Scale .. ", " .. v[c].Y.Offset .. ")" .. SD
+					elseif typeof(v[c]) == "UDim" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. "UDim.new(" .. v[c].Scale .. ", " .. v[c].Offset .. ")" .. SD
+					elseif typeof(v[c]) == "number" or typeof(v[c]) == "boolean" or typeof(v[c]) == "EnumItem" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. tostring(v[c]) .. SD
+					elseif typeof(v[c]) == "ColorSequence" then
+						MainS = MainS .. GetName(v) .. "." .. c .. " = " .. d(v)
+					end
+				end
+			end
+		    MainS = MainS  .. SD
+		end
+	end
+	
+	local First = true
+	for i, v in pairs(AllDesc) do
+		if v:IsA("Script") or v:IsA("LocalScript") then
+			if First then First = false
+				MainS = MainS .. SPar(v.Source, GetName(v.Parent))
+			else
+				MainS = MainS .. SD .. SD .. SPar(v.Source, GetName(v.Parent))
+			end
+		end
+	end
+	
+	local CopyFunction = setclipboard or toclipboard or (syn and syn.write_clipboard)
+	
+	if CopyFunction and typeof(CopyFunction) == "function" then
+		CopyFunction(MainS)
+	else
+		local FinalV = Instance.new("LocalScript", game:GetService("Workspace"))
+		FinalV.Source = MainS
+	end
+end
