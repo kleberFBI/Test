@@ -80,6 +80,39 @@ local FrameP = {
 	["RootLocalizationTable"] = nil
 }
 
+local VideoFrameP = {
+	["SelectionImageObject"] = nil,
+	["Archivable"] = true,
+	["Active"] = false,
+	["AnchorPoint"] = Vector2.new(0, 0),
+	["AutomaticSize"] = Enum.AutomaticSize.None,
+	["BackgroundColor3"] = Color3.new(.639216, .635294, .647059),
+	["BackgroundTransparency"] = 0,
+	["BorderColor3"] = Color3.new(.105882, .164706, .207843),
+	["LayoutOrder"] = 0,
+	["Name"] = "VideoFrame",
+	["Position"] = UDim2.new(0, 0, 0, 0),
+	["Rotation"] = 0,
+	["Selectable"] = false,
+	["Size"] = UDim2.new(0, 0, 0, 0),
+	["SizeConstraint"] = Enum.SizeConstraint.RelativeXY,
+	["Visible"] = true,
+	["ZIndex"] = 1,
+	["ClipsDescendants"] = false,
+	["NextSelectionDown"] = nil,
+	["NextSelectionLeft"] = nil,
+	["NextSelectionRight"] = nil,
+	["NextSelectionUp"] = nil,
+	["AutoLocalize"] = true,
+	["RootLocalizationTable"] = nil,
+	["Looped"] = false,
+	["Playing"] = false,
+	["TimePosition"] = 0,
+	["Video"] = "",
+	["Volume"] = 1
+}
+
+
 local ScrollingFrameP = {
 	["Draggable"] = false,
 	["SelectionImageObject"] = nil,
@@ -467,6 +500,7 @@ local UIStrokeP = {
 local GuiProp = { 
 	["ScreenGui"] = ScreenGuiP,
 	["Frame"] = FrameP,
+	["VideoFrame"] = VideoFrameP,
 	["ScrollingFrame"] = ScrollingFrameP,
 	["TextLabel"] = TextLabelP,
 	["TextButton"] = TextButtonP,
