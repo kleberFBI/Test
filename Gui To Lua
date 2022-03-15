@@ -81,6 +81,7 @@ local FrameP = {
 }
 
 local VideoFrameP = {
+	["Draggable"] = false,
 	["SelectionImageObject"] = nil,
 	["Archivable"] = true,
 	["Active"] = false,
