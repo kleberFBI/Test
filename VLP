@@ -1,6 +1,6 @@
 if not clonefunction then
 	function clonefunction(v)
-		return
+		return v
 	end
 end
 
