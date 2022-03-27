@@ -1,8 +1,8 @@
 local Var = {
 	["Copy"] = (syn and syn.write_clipboard) or setclipboard or toclipboard,
 	["GetAssetId"] = getsynasset or getcustomasset
-  ["Request"] =  request or http_request or (syn and syn.request) or (http and http.request)
-  ["Run_On_Teleport"] = (syn and syn.queue_on_teleport) or queue_on_teleport
+	["Request"] =  request or http_request or (syn and syn.request) or (http and http.request)
+	["Run_On_Teleport"] = (syn and syn.queue_on_teleport) or queue_on_teleport
 }
 
 return Var
