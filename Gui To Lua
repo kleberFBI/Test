@@ -622,14 +622,14 @@ if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("Scr
 			end
 			
 			if First then First = false
-                local Start = v.Source
+				local Start = v.Source
 				for i = #ALP, 1, -1 do
 					Start = SPar(Start, ALP[i][2], ALP[i][1])
 				end
 				
 				MainS = MainS .. Start
 			else
-                local Start = v.Source
+				local Start = v.Source
 				for i = #ALP, 1, -1 do
 					Start = SPar(Start, ALP[i][2], ALP[i][1])
 				end
