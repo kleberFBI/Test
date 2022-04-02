@@ -529,10 +529,10 @@ local SD = [[
 
 ]]
 
-local function SPar(Source, ChangeTo)
+local function SPar(Source, ToFind, ChangeTo)
 	local New = Source
-	while string.find(string.upper(New), "SCRIPT.PARENT") do
-		local X, Y = string.find(string.upper(New), "SCRIPT.PARENT")
+	while string.find(string.upper(New), ToFind) do
+		local X, Y = string.find(string.upper(New), ToFind)
 		New = string.sub(New, 1, X - 1) .. ChangeTo .. string.sub(New, Y + 1, #New)
 	end
 	return New
@@ -611,10 +611,30 @@ if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("Scr
 	local First = true
 	for i, v in pairs(AllDesc) do
 		if v:IsA("Script") or v:IsA("LocalScript") then
+			local ALP = {}
+			local FStr = "SCRIPT"
+			local CP = v
+			
+			while GetName(CP.Parent) do
+				ALP[#ALP+1] = { GetName(CP.Parent), FStr .. ".PARENT"}
+				FStr = FStr .. ".PARENT"
+				CP = CP.Parent
+			end
+			
 			if First then First = false
-				MainS = MainS .. SPar(v.Source, GetName(v.Parent))
+                local Start = v.Source
+				for i = #ALP, 1, -1 do
+					Start = SPar(Start, ALP[i][2], ALP[i][1])
+				end
+				
+				MainS = MainS .. Start
 			else
-				MainS = MainS .. SD .. SD .. SPar(v.Source, GetName(v.Parent))
+                local Start = v.Source
+				for i = #ALP, 1, -1 do
+					Start = SPar(Start, ALP[i][2], ALP[i][1])
+				end
+				
+				MainS = MainS .. SD .. SD .. Start
 			end
 		end
 	end
