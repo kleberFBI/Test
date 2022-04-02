@@ -616,7 +616,13 @@ if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("Scr
 			local CP = v
 			
 			while GetName(CP.Parent) do
-				ALP[#ALP+1] = { GetName(CP.Parent), FStr .. ".PARENT"}
+				local Path_Table = {}
+				for i, v in pairs(CP.Parent:GetChildren()) do
+					if v ~= CP then
+						Path_Table[v.Name] = {FStr .. ".PARENT." .. v.Name:upper(), GetName(v)}
+					end
+				end
+				ALP[#ALP+1] = { GetName(CP.Parent), FStr .. ".PARENT", Path_Table}
 				FStr = FStr .. ".PARENT"
 				CP = CP.Parent
 			end
@@ -624,6 +630,12 @@ if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("Scr
 			if First then First = false
 				local Start = v.Source
 				for i = #ALP, 1, -1 do
+					for c, d in pairs(ALP[i][3]) do
+						if string.find(Start:upper(), d[1]) then
+							Start = SPar(Start, d[1], d[2])
+						end
+					end
+					
 					Start = SPar(Start, ALP[i][2], ALP[i][1])
 				end
 				
