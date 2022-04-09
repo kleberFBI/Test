@@ -5,5 +5,5 @@ return
 ["CarStore_"] = 9,
 ["ShackShop_"] = 10,
 ["LogicStore_"] = 12,
-["FineArt_"] = 11,
+["FineArt_"] = 11
 }
