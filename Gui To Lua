@@ -553,20 +553,21 @@ local MainName
 if GuiObj and (GuiObj:IsA("ScreenGui") or GuiObj:IsA("Frame") or GuiObj:IsA("ScrollingFrame") or GuiObj:IsA("TextLabel") or GuiObj:IsA("TextButton") or GuiObj:IsA("TextBox") or GuiObj:IsA("ImageButton") or GuiObj:IsA("ImageLabel")) then
 	local AllDesc
 	MainS = 'local ' .. GuiObj.Name .. ' = Instance.new("' .. GuiObj.ClassName .. '")' .. SD
-	MainName = GuiObj.Name
+	MainName = GuiObj.Name:gsub(" ", "")
 	UsedNames[GuiObj.Name] = GuiObj
 	AllDesc = GuiObj:GetDescendants()
 	
 	for i, v in pairs(AllDesc) do
 		if GuiProp[v.ClassName] then
-			if UsedNames[v.Name] == nil then
+			local LName = v.Name:gsub(" ", "")
+			if UsedNames[LName] == nil then
 				MainS = MainS .. 'local ' .. v.Name .. ' = Instance.new("' .. v.ClassName .. '")' .. SD
-				UsedNames[v.Name] = v
+				UsedNames[LName] = v
 			else
 				for i = 1, 1000 do
-					if not UsedNames[v.Name .. "_" .. tostring(i)] then
+					if not UsedNames[LName .. "_" .. tostring(i)] then
 						MainS = MainS .. 'local ' .. v.Name .. "_" .. tostring(i) .. ' = Instance.new("' .. v.ClassName .. '")' .. SD
-						UsedNames[v.Name .. "_" .. tostring(i)] = v
+						UsedNames[LName .. "_" .. tostring(i)] = v
 						break
 					end
 				end
